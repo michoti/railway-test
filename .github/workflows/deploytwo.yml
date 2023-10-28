@@ -24,7 +24,7 @@ jobs:
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
       - name: Deploy to EC2
         run: |
-          sudo rsync -avz --delete -e "ssh -i ~/.ssh/id_rsa" ./ ubuntu@${{ secrets.EC2_PUBLIC_IP }}:/var/www/railway-test
+          rsync -avz --delete -e "ssh -i ~/.ssh/id_rsa" ./ ubuntu@${{ secrets.EC2_PUBLIC_IP }}:/var/www/railway-test
           ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_PUBLIC_IP }} 'cd /var/www/railway-test && composer install --no-interaction --prefer-dist --optimize-autoloader && php artisan migrate --force && php artisan config:cache && php artisan route:cache'
 
       - name: Clear SSH key
